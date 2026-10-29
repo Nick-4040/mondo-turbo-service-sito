@@ -276,9 +276,11 @@ html.intro .hero-logo img { animation: none; opacity: 0; }
 .contact { overflow: hidden; }
 .mapview { width: 100%; max-width: 100%; }
 .mapview iframe { max-width: 100%; position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-.map-consent { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.2rem; padding: 1.5rem; text-align: center; background: var(--graphite); color: var(--muted); font-size: .95rem; cursor: default; }
-.map-consent p { max-width: 40ch; margin: 0; }
-.map-consent a, footer a { color: var(--bone); text-decoration: underline; }
+footer a { color: var(--bone); text-decoration: underline; }
+.map-static { position: absolute; inset: 0; display: block; cursor: pointer; }
+.map-static img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1.2s cubic-bezier(.2,.7,.2,1); }
+.map-static:hover img { transform: scale(1.03); }
+.map-attrib { position: absolute; right: 8px; bottom: 8px; padding: 2px 8px; background: rgba(0,0,0,.72); color: var(--bone); font-size: .72rem; pointer-events: none; }
 .mapview { position: relative; overflow: hidden; aspect-ratio: 4 / 3; min-height: 20rem; background: #e8e8e6; cursor: grab; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
 .mapview.grabbing { cursor: grabbing; }
 .mapview.active { touch-action: none; }
@@ -570,11 +572,11 @@ html.intro .hero-logo img { animation: none; opacity: 0; }
       </div>
       <div class="mapbox">
         <div class="mapview">
-          <div class="map-consent">
-            <p>La mappa è fornita da Google: caricandola, Google riceve il tuo indirizzo IP e può impostare cookie. <a href="privacy.html#cookie">Cookie policy</a></p>
-            <button class="btn btn-red" type="button" id="mapload"><span>Mostra la mappa</span></button>
-            <template id="maptpl"><iframe title="Mappa di Mondo Turbo Service, Via Alberto del Bono 3, Parma" src="https://www.google.com/maps?q=Mondo+Turbo+Service+Via+Alberto+del+Bono+3+43123+Parma&amp;hl=it&amp;z=16&amp;output=embed" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe></template>
-          </div>
+          <a class="map-static" href="https://www.google.com/maps/search/?api=1&amp;query=Mondo+Turbo+Service+Via+Alberto+del+Bono+3+Parma" target="_blank" rel="noopener noreferrer" aria-label="Apri la posizione su Google Maps">
+            <!-- immagine statica: nessuna richiesta a Google finché non si clicca -->
+            <img src="img/mappa.webp" alt="Mappa: Mondo Turbo Service, Via Alberto del Bono 3, Parma" loading="lazy">
+            <span class="map-attrib">Dati mappa ©2026 Google</span>
+          </a>
         </div>
         <div class="map-card">
           <div><strong>Mondo Turbo Service</strong><br><small>Via Alberto del Bono, 3, 43123 Parma</small></div>
@@ -597,16 +599,6 @@ html.intro .hero-logo img { animation: none; opacity: 0; }
 </footer>
 
 <script>
-/* Google Maps si carica solo dopo il clic: prima nessun dato va a Google */
-(function () {
-  var btn = document.getElementById('mapload');
-  if (!btn) return;
-  btn.addEventListener('click', function () {
-    var box = btn.parentElement;
-    box.replaceWith(document.getElementById('maptpl').content.cloneNode(true));
-  });
-})();
-
 /* Menu */
 (function () {
   var btn = document.querySelector('.menu-btn');
